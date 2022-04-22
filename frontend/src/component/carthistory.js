@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import React from 'react'
 
 const carthistory = ({item}) => {
+  console.log(item);
   return (
     <div className="cartitem">
       <div className="cartitem__image">

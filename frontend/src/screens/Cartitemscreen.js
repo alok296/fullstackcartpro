@@ -5,13 +5,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link} from "react-router-dom";
 import Carthistory from "../component/carthistory";
 import {removeCartItem} from "../redux/action/addcartitemaction";
+import axios from "axios";
 const carthistory = () => {
   const dispatch = useDispatch();
-  const carthistory = useSelector((state) => state.addcartitem);
-console.log(carthistory);
+  useEffect(() =>{
+    axios.get('/cart/getcart').then(res=>{
+    const cartdata = res.data;
+    console.log(cartdata)
+    })
+    console.log(cartdata)
+  }, []);
 
-
-  useEffect(() => {}, []);
   const removeFromCartHandler = (id) => {
     dispatch(removeCartItem(id));
   };
@@ -21,12 +25,12 @@ console.log(carthistory);
       <div className="cartscreen">
         <div className="cartscreen__left">
           <h2>Cart history</h2>
-          {carthistory.length === 0 ? (
+          {cartittem.length === 0 ? (
             <div>
               Your Cart history is empty <Link to="/">Go Back</Link>
             </div>
           ) : (
-            carthistory.map((item) => (
+            cartdata.map((item) => (
               <Carthistory
                 key={item.product}
                 item={item}

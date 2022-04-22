@@ -5,17 +5,14 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link , useNavigate } from "react-router-dom";
 import CartItem from "../component/CartItem";
-import { addToCart, clearcart, removeFromCart } from "../redux/action/cartAction";
+import { addToCart,clearcart,removeFromCart } from "../redux/action/cartAction";
 import {addcartitemaction} from "../redux/action/addcartitemaction"
 import axios from 'axios'
 const CartScreen = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const carthistory = useSelector((state)=>state.carthistory);
   const { cartItems } = cart;
-  console.log(cartItems)
-
   useEffect(() => {}, []);
 
   const qtyChangeHandler = (id, qty) => {
@@ -36,32 +33,25 @@ const CartScreen = () => {
       .toFixed(1);
   };
 
-  const makepayment = (token) =>{
+  const makepayment = async(token) =>{
     if(token){
-      navigate("/")
+      cartItems.map((value)=>{
+          axios.post(`/cart/addcart`,{
+          name:value.name,
+          email:token.email,
+          imageUrl:value.imageUrl,
+          totalprice:getCartSubTotal(),
+          qty:value.qty
+        })
+      })
       dispatch(addcartitemaction(cartItems))
-      const cartdata = cartItems.map((data)=>({
-        name:data.name,
-        imageUrl:data.imageUrl,
-        totalprice:getCartSubTotal(),
-        qty: 1,
-        email:token.email,    
-      }))
-      axios.post(`/api/products/addcart`,cartdata)
-      dispatch(clearcart())
+      cartItems.length=0
+      // dispatch(clearcart())
     }
     else{
       alert(`payment Error`)
     }
   }
-
-  // console.log(token)
-
-
-
-  
-
-
   return (
     <>
       <div className="cartscreen">

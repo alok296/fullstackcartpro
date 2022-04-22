@@ -1,6 +1,14 @@
 .newUser {
     flex: 4;
   }
+
+  .gender{
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(151, 150, 150);
+  }
   
   .newUserForm {
     display:inline-flex;
